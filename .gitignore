@@ -1,0 +1,19 @@
+# Node
+node_modules/
+.pnpm-store/
+
+# Next
+web/.next/
+web/out/
+web/next-env.d.ts
+web/.turbo/
+
+# Build artifacts
+*.log
+.DS_Store
+.env
+.env*.local
+
+# Editor
+.vscode/
+.idea/

@@ -1,0 +1,158 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  /* Font families */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-heading: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-mono: ui-monospace, SFMono-Regular, monospace;
+
+  /* Semantic color tokens bound to raw vars below */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Spec §9 product tokens */
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-hairline: var(--hairline);
+  --color-hairline-strong: var(--hairline-strong);
+  --color-garnet: var(--garnet);
+  --color-garnet-hover: var(--garnet-hover);
+  --color-garnet-soft: var(--garnet-soft);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-error: var(--error);
+
+  /* Radius scale */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 999px;
+
+  /* Elevation */
+  --shadow-e1: 0 1px 2px rgb(0 0 0 / 0.06);
+  --shadow-e2: 0 8px 24px rgb(0 0 0 / 0.10);
+  --shadow-e3: 0 16px 40px rgb(0 0 0 / 0.14);
+}
+
+:root {
+  /* Raw palette — Airbnb-sober + single deep garnet accent */
+  --ink: oklch(0.22 0 0);             /* #222 */
+  --ink-muted: oklch(0.48 0 0);       /* ~#6B6B6B */
+  --surface: oklch(0.985 0.002 85);   /* #FAFAF7 warm off-white */
+  --surface-muted: oklch(0.95 0.005 85); /* #F1EFEA */
+  --hairline: oklch(0.90 0.003 85);   /* #E4E2DD */
+  --hairline-strong: oklch(0.82 0.005 85); /* #C9C5BD */
+  --garnet: oklch(0.37 0.11 15);      /* deep garnet #7A1E2D */
+  --garnet-hover: oklch(0.30 0.11 15);
+  --garnet-soft: oklch(0.96 0.015 15); /* #F6ECEE */
+  --success: oklch(0.51 0.13 150);
+  --warning: oklch(0.65 0.15 55);
+  --error: oklch(0.54 0.19 27);
+
+  /* shadcn semantic mappings → our palette */
+  --background: var(--surface);
+  --foreground: var(--ink);
+  --card: oklch(1 0 0);
+  --card-foreground: var(--ink);
+  --popover: oklch(1 0 0);
+  --popover-foreground: var(--ink);
+  --primary: var(--garnet);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: var(--surface-muted);
+  --secondary-foreground: var(--ink);
+  --muted: var(--surface-muted);
+  --muted-foreground: var(--ink-muted);
+  --accent: var(--garnet-soft);
+  --accent-foreground: var(--garnet);
+  --destructive: var(--error);
+  --destructive-foreground: oklch(1 0 0);
+  --border: var(--hairline);
+  --input: var(--hairline);
+  --ring: var(--garnet);
+
+  --radius: 0.625rem;
+}
+
+/* No dark mode in MVP — spec §9 is a single light theme. */
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+    /* Better font rendering on macOS / iOS */
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "cv11", "ss01", "ss03";
+  }
+  h1, h2, h3, h4, .font-serif {
+    font-family: var(--font-serif);
+    letter-spacing: -0.01em;
+  }
+  /* Thin focus ring */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-ring;
+  }
+}
+
+/* Utility: muted gradient "photo fallback" for placeholders */
+@layer utilities {
+  .photo-fallback {
+    background:
+      linear-gradient(135deg, oklch(0.88 0.02 30) 0%, oklch(0.78 0.04 20) 100%);
+  }
+  .photo-fallback-2 {
+    background:
+      linear-gradient(135deg, oklch(0.90 0.015 90) 0%, oklch(0.82 0.03 100) 100%);
+  }
+  .photo-fallback-3 {
+    background:
+      linear-gradient(135deg, oklch(0.86 0.02 55) 0%, oklch(0.76 0.04 45) 100%);
+  }
+  .photo-fallback-4 {
+    background:
+      linear-gradient(135deg, oklch(0.85 0.025 180) 0%, oklch(0.75 0.05 190) 100%);
+  }
+  .photo-fallback-5 {
+    background:
+      linear-gradient(135deg, oklch(0.84 0.03 15) 0%, oklch(0.72 0.06 5) 100%);
+  }
+  /* Subtle zellige-inspired hairline pattern — functional separator only */
+  .hairline-divider {
+    height: 1px;
+    background-image: repeating-linear-gradient(
+      90deg,
+      var(--hairline) 0 4px,
+      transparent 4px 8px
+    );
+  }
+}
