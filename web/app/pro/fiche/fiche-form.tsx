@@ -156,16 +156,6 @@ export function FicheForm({ venue }: { venue: Venue }) {
       <Section title="Politiques et équipements">
         <div className="grid md:grid-cols-2 gap-4">
           <SelectField
-            label="Alcool"
-            value={draft.alcoholPolicy}
-            onChange={(v) => set("alcoholPolicy", v as Venue["alcoholPolicy"])}
-            options={[
-              { value: "forbidden", label: "Interdit" },
-              { value: "byo", label: "BYO autorisé" },
-              { value: "allowed", label: "Autorisé" },
-            ]}
-          />
-          <SelectField
             label="Séparation H/F"
             value={draft.genderSeparation}
             onChange={(v) => set("genderSeparation", v as Venue["genderSeparation"])}

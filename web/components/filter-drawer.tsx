@@ -8,7 +8,6 @@ import { cn } from "@/lib/utils";
 
 export interface FilterState {
   capacityMin: number;
-  alcohol: "any" | "forbidden" | "byo" | "allowed";
   genderSep: "any" | "mixed" | "separable" | "strict";
   prayer: boolean;
   wudu: boolean;
@@ -22,7 +21,6 @@ export interface FilterState {
 
 export const defaultFilters: FilterState = {
   capacityMin: 0,
-  alcohol: "any",
   genderSep: "any",
   prayer: false,
   wudu: false,
@@ -37,7 +35,6 @@ export const defaultFilters: FilterState = {
 export function activeFilterCount(f: FilterState): number {
   let c = 0;
   if (f.capacityMin > 0) c++;
-  if (f.alcohol !== "any") c++;
   if (f.genderSep !== "any") c++;
   if (f.prayer) c++;
   if (f.wudu) c++;
@@ -120,21 +117,6 @@ export function FilterDrawer({
               active={draft.halalOnly}
               onClick={() => set("halalOnly", !draft.halalOnly)}
             />
-          </Group>
-
-          <Group title="Alcool">
-            <div className="flex flex-wrap gap-2">
-              {([
-                ["any", "Indifférent"],
-                ["forbidden", "Sans alcool"],
-                ["byo", "BYO"],
-                ["allowed", "Autorisé"],
-              ] as const).map(([v, l]) => (
-                <Chip key={v} active={draft.alcohol === v} onClick={() => set("alcohol", v)}>
-                  {l}
-                </Chip>
-              ))}
-            </div>
           </Group>
 
           <Group title="Séparation H/F">

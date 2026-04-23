@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, MapPin, Users, Clock, Music, Car, Flame, ShieldCheck, HeartHandshake, AlignJustify } from "lucide-react";
+import { ArrowLeft, MapPin, Users, Clock, Music, Car, ShieldCheck, HeartHandshake, AlignJustify } from "lucide-react";
 import { findVenueBySlug, reviewsFor, avgRating, venueToListing, venues, venueBadges } from "@/lib/fixtures";
 import { PhotoMosaic } from "@/components/photo-mosaic";
 import { ReviewCard } from "@/components/review-card";
@@ -93,17 +93,6 @@ export default async function VenueDetailPage({
                       : "Libre choix"
                 }
                 sub={venue.halalOnlyTraiteur ? "Halal uniquement" : "Halal et non-halal"}
-              />
-              <Fact
-                icon={Flame}
-                title="Alcool"
-                value={
-                  venue.alcoholPolicy === "forbidden"
-                    ? "Interdit"
-                    : venue.alcoholPolicy === "byo"
-                      ? "BYO autorisé"
-                      : "Autorisé"
-                }
               />
               <Fact
                 icon={AlignJustify}

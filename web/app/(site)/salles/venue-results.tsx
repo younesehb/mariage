@@ -45,7 +45,6 @@ export function VenueResults({ venues, initialCity, initialGuests, initialDays =
       if (guests && v.capacityMax < guests) return false;
       if (priceTier !== "any" && v.priceTier !== priceTier) return false;
       if (filters.capacityMin > 0 && v.capacityMax < filters.capacityMin) return false;
-      if (filters.alcohol !== "any" && v.alcoholPolicy !== filters.alcohol) return false;
       if (filters.genderSep !== "any" && v.genderSeparation !== filters.genderSep) return false;
       if (filters.prayer && !v.prayerArea) return false;
       if (filters.wudu && !v.wuduFacilities) return false;

@@ -11,8 +11,6 @@ export { reviews, reviewsFor, avgRating };
 export function venueBadges(v: Venue): string[] {
   const out: string[] = [`${v.capacityMin}–${v.capacityMax} invités`];
   if (v.halalOnlyTraiteur) out.push("Halal only");
-  if (v.alcoholPolicy === "forbidden") out.push("Sans alcool");
-  if (v.alcoholPolicy === "byo") out.push("Alcool BYO");
   if (v.genderSeparation === "strict") out.push("Séparation stricte");
   if (v.genderSeparation === "separable") out.push("Séparable");
   if (v.prayerArea) out.push("Salle de prière");

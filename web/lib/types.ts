@@ -5,7 +5,6 @@ export type Lang = "fr" | "nl";
 
 export type PriceTier = "€" | "€€" | "€€€";
 
-export type AlcoholPolicy = "allowed" | "forbidden" | "byo";
 export type GenderSeparation = "mixed" | "separable" | "strict";
 export type TraiteurPolicy = "in_house" | "imposed_list" | "free_choice";
 
@@ -55,7 +54,6 @@ export interface Venue {
   priceRangeMax?: number;
   capacityMin: number;
   capacityMax: number;
-  alcoholPolicy: AlcoholPolicy;
   genderSeparation: GenderSeparation;
   prayerArea: boolean;
   wuduFacilities: boolean;
