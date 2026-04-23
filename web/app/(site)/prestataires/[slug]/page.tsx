@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, MessageCircle, Mail, ShieldCheck, Truck, Utensils, Users, MapPin } from "lucide-react";
+import { ArrowLeft, MessageCircle, Mail, Truck, Utensils, Users, MapPin } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import {
   findVendorBySlug,
@@ -97,11 +97,6 @@ export default async function VendorDetailPage({
                       ? `€${v.pricePerGuestMin}–${v.pricePerGuestMax}`
                       : "Sur demande"
                   }
-                />
-                <Fact
-                  icon={ShieldCheck}
-                  title="Certification"
-                  value={v.halalCertified ? "Halal certifié" : "Non certifié halal"}
                 />
                 <Fact
                   icon={Truck}

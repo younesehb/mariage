@@ -10,8 +10,8 @@ export const vendors: Vendor[] = [
     name: "Beldi Traiteur",
     category: "traiteur",
     description: {
-      fr: "Cuisine marocaine authentique, couscous, tajines, pastilla et pièces sucrées. Halal certifié, dressages raffinés.",
-      nl: "Authentieke Marokkaanse keuken, couscous, tajines, pastilla en zoete hapjes. Halal gecertificeerd, verfijnde presentatie.",
+      fr: "Cuisine marocaine authentique, couscous, tajines, pastilla et pièces sucrées. Dressages raffinés, équipe rodée aux grands mariages.",
+      nl: "Authentieke Marokkaanse keuken, couscous, tajines, pastilla en zoete hapjes. Verfijnde presentatie, team met ervaring in grote bruiloften.",
     },
     serviceCities: ["Bruxelles", "Antwerpen", "Liège"],
     photos: [
@@ -27,7 +27,6 @@ export const vendors: Vendor[] = [
     cuisineTags: ["marocain", "méditerranéen", "pâtisserie"],
     pricePerGuestMin: 65,
     pricePerGuestMax: 120,
-    halalCertified: true,
     deliveryRadiusKm: 100,
   },
   {
@@ -36,8 +35,8 @@ export const vendors: Vendor[] = [
     name: "Chorba Royal",
     category: "traiteur",
     description: {
-      fr: "Spécialiste des grands mariages. Équipe de 20 personnes, capable de servir 800 invités. Cuisine marocaine et libanaise halal.",
-      nl: "Specialist van grote bruiloften. Team van 20, kan tot 800 gasten bedienen. Marokkaanse en Libanese halal keuken.",
+      fr: "Spécialiste des grands mariages. Équipe de 20 personnes, capable de servir 800 invités. Cuisine marocaine et libanaise.",
+      nl: "Specialist van grote bruiloften. Team van 20, kan tot 800 gasten bedienen. Marokkaanse en Libanese keuken.",
     },
     serviceCities: ["Bruxelles", "Gent"],
     photos: [
@@ -52,7 +51,6 @@ export const vendors: Vendor[] = [
     cuisineTags: ["marocain", "libanais"],
     pricePerGuestMin: 80,
     pricePerGuestMax: 150,
-    halalCertified: true,
     deliveryRadiusKm: 150,
   },
   {
@@ -61,8 +59,8 @@ export const vendors: Vendor[] = [
     name: "Fès Fusion",
     category: "traiteur",
     description: {
-      fr: "Pour une touche contemporaine : cuisine marocaine fusionnée avec des influences françaises et italiennes. Halal.",
-      nl: "Voor een eigentijdse toets: Marokkaanse keuken gemengd met Franse en Italiaanse invloeden. Halal.",
+      fr: "Pour une touche contemporaine : cuisine marocaine fusionnée avec des influences françaises et italiennes.",
+      nl: "Voor een eigentijdse toets: Marokkaanse keuken gemengd met Franse en Italiaanse invloeden.",
     },
     serviceCities: ["Bruxelles"],
     photos: [
@@ -77,7 +75,6 @@ export const vendors: Vendor[] = [
     cuisineTags: ["marocain", "français", "fusion"],
     pricePerGuestMin: 95,
     pricePerGuestMax: 160,
-    halalCertified: true,
     deliveryRadiusKm: 60,
   },
   // --- ZIANA (décor / throne) ---

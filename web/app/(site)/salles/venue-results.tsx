@@ -51,7 +51,6 @@ export function VenueResults({ venues, initialCity, initialGuests, initialDays =
       if (filters.parking && (v.parkingSpaces == null || v.parkingSpaces === 0)) return false;
       if (filters.stage && !v.stageAvailable) return false;
       if (filters.femaleStaff && !v.femaleStaffAvailable) return false;
-      if (filters.halalOnly && !v.halalOnlyTraiteur) return false;
       if (filters.traiteurPolicy !== "any" && v.traiteurPolicy !== filters.traiteurPolicy) return false;
       if (filters.noise !== "any") {
         if (filters.noise === "none" && v.noiseCurfewWeekend !== null) return false;
@@ -109,12 +108,6 @@ export function VenueResults({ venues, initialCity, initialGuests, initialDays =
                 {t === "any" ? "Tous les prix" : t}
               </FilterPill>
             ))}
-            <FilterPill
-              active={filters.halalOnly}
-              onClick={() => setFilters({ ...filters, halalOnly: !filters.halalOnly })}
-            >
-              Halal only
-            </FilterPill>
             <FilterDrawer filters={filters} onChange={setFilters} />
           </div>
         </div>

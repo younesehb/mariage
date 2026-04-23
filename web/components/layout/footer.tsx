@@ -10,7 +10,7 @@ export function Footer() {
           <div className="col-span-2 space-y-4">
             <Wordmark />
             <p className="text-sm text-ink-muted max-w-xs leading-relaxed">
-              Organiser un mariage en Belgique, à la marocaine. Trouvez salles, traiteurs halal,
+              Organiser un mariage en Belgique, à la marocaine. Trouvez salles, traiteurs,
               ziana, nachid et plus — sans détour par WhatsApp.
             </p>
             <LanguageSwitcher variant="footer" />
@@ -20,7 +20,7 @@ export function Footer() {
             title="Découvrir"
             links={[
               { href: "/salles", label: "Salles de réception" },
-              { href: "/prestataires?cat=traiteur", label: "Traiteurs halal" },
+              { href: "/prestataires?cat=traiteur", label: "Traiteurs" },
               { href: "/prestataires?cat=ziana", label: "Ziana" },
               { href: "/prestataires?cat=photographer", label: "Photographes" },
             ]}

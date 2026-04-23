@@ -62,7 +62,6 @@ export interface Venue {
   noiseCurfewWeekend: string | null;
   stageAvailable: boolean;
   traiteurPolicy: TraiteurPolicy;
-  halalOnlyTraiteur: boolean;
   femaleStaffAvailable: boolean;
   claimStatus: ClaimStatus;
   status: ListingStatus;
@@ -85,7 +84,6 @@ export interface Vendor {
   cuisineTags?: string[];
   pricePerGuestMin?: number;
   pricePerGuestMax?: number;
-  halalCertified?: boolean;
   deliveryRadiusKm?: number;
 }
 

@@ -16,7 +16,6 @@ export interface FilterState {
   stage: boolean;
   traiteurPolicy: "any" | "in_house" | "imposed_list" | "free_choice";
   femaleStaff: boolean;
-  halalOnly: boolean;
 }
 
 export const defaultFilters: FilterState = {
@@ -29,7 +28,6 @@ export const defaultFilters: FilterState = {
   stage: false,
   traiteurPolicy: "any",
   femaleStaff: false,
-  halalOnly: false,
 };
 
 export function activeFilterCount(f: FilterState): number {
@@ -43,7 +41,6 @@ export function activeFilterCount(f: FilterState): number {
   if (f.stage) c++;
   if (f.traiteurPolicy !== "any") c++;
   if (f.femaleStaff) c++;
-  if (f.halalOnly) c++;
   return c;
 }
 
@@ -109,14 +106,6 @@ export function FilterDrawer({
                 </Chip>
               ))}
             </div>
-          </Group>
-
-          <Group title="Halal">
-            <Toggle
-              label="Traiteur halal uniquement"
-              active={draft.halalOnly}
-              onClick={() => set("halalOnly", !draft.halalOnly)}
-            />
           </Group>
 
           <Group title="Séparation H/F">

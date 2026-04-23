@@ -51,7 +51,6 @@ export function InquiryCard({
             Envoyez une demande — la salle vous confirme la disponibilité et le tarif définitif. Aucun paiement à ce stade.
           </div>
           <Mini label={`${venue.capacityMin}–${venue.capacityMax} invités`} />
-          <Mini label={venue.halalOnlyTraiteur ? "Traiteur halal uniquement" : "Traiteur libre"} />
           <Mini
             label={
               venue.genderSeparation === "strict"

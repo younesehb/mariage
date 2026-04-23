@@ -10,7 +10,6 @@ export { reviews, reviewsFor, avgRating };
 // Human-readable badges per spec §6 venue fields
 export function venueBadges(v: Venue): string[] {
   const out: string[] = [`${v.capacityMin}–${v.capacityMax} invités`];
-  if (v.halalOnlyTraiteur) out.push("Halal only");
   if (v.genderSeparation === "strict") out.push("Séparation stricte");
   if (v.genderSeparation === "separable") out.push("Séparable");
   if (v.prayerArea) out.push("Salle de prière");
@@ -51,7 +50,6 @@ export function vendorToListing(v: Vendor): ListingSummary {
   const photos = v.photos.slice(0, 3);
   const kind: ListingSummary["kind"] = v.category === "traiteur" ? "traiteur" : "vendor-lighter";
   const badges: string[] = [];
-  if (v.halalCertified) badges.push("Halal certifié");
   if (v.femaleStaffAvailable) badges.push("Personnel féminin");
   if (v.pricePerGuestMin && v.pricePerGuestMax) {
     badges.push(`€${v.pricePerGuestMin}–${v.pricePerGuestMax}/pers.`);

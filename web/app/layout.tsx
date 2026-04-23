@@ -19,7 +19,7 @@ const fraunces = Fraunces({
 export const metadata: Metadata = {
   title: "Zaffa — Planifier votre mariage en Belgique",
   description:
-    "Trouvez des salles de réception, traiteurs halal, ziana, nachid et plus encore — pensé pour la diaspora marocaine en Belgique.",
+    "Trouvez des salles de réception, traiteurs, ziana, nachid et plus encore — pensé pour la diaspora marocaine en Belgique.",
 };
 
 export default function RootLayout({

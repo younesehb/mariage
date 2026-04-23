@@ -55,7 +55,6 @@ export default function AdminVendorsPage() {
               <TH>Catégorie</TH>
               <TH>Zones</TH>
               <TH>Tarif</TH>
-              <TH>Halal</TH>
               <TH>Personnel féminin</TH>
               <TH>Revendication</TH>
               <TH>Avis</TH>
@@ -80,15 +79,6 @@ export default function AdminVendorsPage() {
                     <span>€{v.pricePerGuestMin}–{v.pricePerGuestMax}<span className="text-ink-muted text-xs"> / pers.</span></span>
                   ) : (
                     <span className="text-ink-muted">—</span>
-                  )}
-                </TD>
-                <TD>
-                  {v.halalCertified ? (
-                    <StatusPill tone="success">Certifié</StatusPill>
-                  ) : v.category === "traiteur" ? (
-                    <StatusPill tone="warning">Non certifié</StatusPill>
-                  ) : (
-                    <span className="text-ink-muted text-xs">—</span>
                   )}
                 </TD>
                 <TD>

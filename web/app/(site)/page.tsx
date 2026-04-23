@@ -16,7 +16,7 @@ export default function Home() {
     .slice(0, 4)
     .map(venueToListing);
   const newAntwerpen = venues.slice(4, 8).map(venueToListing);
-  const halalTraiteurs = vendorsByCategory("traiteur").map(vendorToListing);
+  const traiteurs = vendorsByCategory("traiteur").map(vendorToListing);
   const featuredPhotographers = vendorsByCategory("photographer").map(vendorToListing);
 
   return (
@@ -37,7 +37,7 @@ export default function Home() {
             <span className="italic text-garnet">sans le parcours du combattant</span>.
           </h1>
           <p className="mt-5 max-w-lg text-base md:text-lg text-ink/80 leading-relaxed">
-            Salles de réception, traiteurs halal, ziana, photographes, nachid. Tout ce qu'il faut pour un mariage marocain en Belgique — filtrable par ce qui compte vraiment.
+            Salles de réception, traiteurs, ziana, photographes, nachid. Tout ce qu'il faut pour un mariage marocain en Belgique — filtrable par ce qui compte vraiment.
           </p>
 
           <div className="mt-10 hidden md:block">
@@ -53,7 +53,7 @@ export default function Home() {
       <section className="border-y border-hairline bg-card">
         <div className="mx-auto grid max-w-[1280px] grid-cols-2 md:grid-cols-4 gap-6 px-6 md:px-10 py-8">
           {[
-            { icon: Check, title: "Filtres qui comptent", sub: "Halal, séparation H/F, salle de prière, parking — dès la page de résultats." },
+            { icon: Check, title: "Filtres qui comptent", sub: "Séparation H/F, salle de prière, personnel féminin, parking — dès la page de résultats." },
             { icon: MapPin, title: "Bruxelles d'abord", sub: "Les salles qu'on connaît déjà, avec leurs vraies contraintes de couvre-feu." },
             { icon: Star, title: "Avis de vrais mariés", sub: "Pas d'avis anonymes. Votre compte, vos photos, votre expérience." },
             { icon: ArrowUpRight, title: "Demande en 2 clics", sub: "Pas de WhatsApp à chercher. Envoyez une demande, recevez une réponse." },
@@ -86,10 +86,10 @@ export default function Home() {
       />
 
       <Row
-        eyebrow="Traiteurs halal"
+        eyebrow="Traiteurs"
         title="Pour 100, 500 ou 800 invités"
         href="/prestataires?cat=traiteur"
-        listings={halalTraiteurs}
+        listings={traiteurs}
       />
 
       <Row
@@ -133,13 +133,13 @@ export default function Home() {
             </div>
             <div className="space-y-5 text-base text-ink/85 leading-relaxed">
               <p>
-                Organiser un mariage marocain ici est un métier : trouver une salle qui accepte une séparation hommes/femmes, un traiteur halal capable de servir 500 invités, une ziana qui livre le jour J — le tout sans se noyer dans des discussions WhatsApp interminables.
+                Organiser un mariage marocain ici est un métier : trouver une salle qui accepte une séparation hommes/femmes, un traiteur capable de servir 500 invités, une ziana qui livre le jour J — le tout sans se noyer dans des discussions WhatsApp interminables.
               </p>
               <p>
                 On connaît chaque salle parce qu'on y a été. Les filtres ne sont pas génériques — ils viennent de votre cahier des charges réel.
               </p>
               <div className="flex flex-wrap gap-2 pt-2">
-                {["Mariage en deux jours", "Couvre-feu tardif", "Parking 100+", "Salle de prière", "Personnel féminin", "Halal certifié"].map((chip) => (
+                {["Mariage en deux jours", "Couvre-feu tardif", "Parking 100+", "Salle de prière", "Personnel féminin", "Ablutions"].map((chip) => (
                   <span
                     key={chip}
                     className="inline-flex items-center rounded-pill border border-hairline bg-card px-3 py-1 text-xs font-medium text-ink"

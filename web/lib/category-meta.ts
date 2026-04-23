@@ -36,7 +36,7 @@ export const CATEGORIES: Record<VendorCategory, CategoryMeta> = {
     labelNl: "Traiteur",
     taglineFr: "Couscous, tajines, pastilla, pièces sucrées",
     descriptionFr:
-      "Les traiteurs marocains et méditerranéens capables de servir 100 à 1000 invités. Halal certifié, dressages raffinés.",
+      "Les traiteurs marocains et méditerranéens capables de servir 100 à 1000 invités. Dressages raffinés, équipes rodées aux grands mariages.",
     icon: ChefHat,
     tint: "bg-[oklch(0.94_0.04_45)]",
     accentFg: "text-[oklch(0.42_0.12_35)]",

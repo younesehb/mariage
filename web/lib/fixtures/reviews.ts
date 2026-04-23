@@ -108,7 +108,7 @@ export const reviews: Review[] = [
     userDisplayName: "Leila K.",
     userAvatarTone: 2,
     rating: 4,
-    text: "Jardin parfait pour la photo. Une petite contrainte : le traiteur imposé n'avait pas d'option végétarienne marquée halal.",
+    text: "Jardin parfait pour la photo. Une petite contrainte : le traiteur imposé n'avait pas d'option végétarienne au menu final.",
     photos: [
       { fallback: fb(3), alt_fr: "Jardin illuminé", alt_nl: "Verlichte tuin" },
     ],

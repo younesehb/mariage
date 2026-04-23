@@ -176,7 +176,7 @@ export default function ProDashboardPage() {
                 <Completion done>Capacités et politiques</Completion>
                 <Completion done>Calendrier à jour</Completion>
                 <Completion done={false}>Description NL</Completion>
-                <Completion done={false}>Badge halal officiel</Completion>
+                <Completion done={false}>Réseaux sociaux connectés</Completion>
               </ul>
               <Link
                 href="/pro/fiche"

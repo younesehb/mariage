@@ -24,7 +24,6 @@ export function VendorResults({
   const [category, setCategory] = useState<Vendor["category"] | null>(initialCategory ?? null);
   const [city, setCity] = useState<string>(initialCity ?? "Toutes");
   const [femaleStaff, setFemaleStaff] = useState(false);
-  const [halalOnly, setHalalOnly] = useState(false);
   const [cuisineTags, setCuisineTags] = useState<string[]>([]);
   const [priceMax, setPriceMax] = useState<number | null>(null);
   const [minRating, setMinRating] = useState<number>(0);
@@ -51,10 +50,6 @@ export function VendorResults({
       if (category && v.category !== category) return false;
       if (city !== "Toutes" && !v.serviceCities.includes(city)) return false;
       if (femaleStaff && !v.femaleStaffAvailable) return false;
-      if (halalOnly) {
-        if (v.category !== "traiteur") return false;
-        if (!v.halalCertified) return false;
-      }
       if (cuisineTags.length > 0) {
         if (v.category !== "traiteur") return false;
         const tags = v.cuisineTags ?? [];
@@ -87,10 +82,9 @@ export function VendorResults({
     });
 
     return result.map(({ vendor }) => vendor);
-  }, [withMeta, category, city, femaleStaff, halalOnly, cuisineTags, priceMax, minRating, q, sort]);
+  }, [withMeta, category, city, femaleStaff, cuisineTags, priceMax, minRating, q, sort]);
 
   const activeFilterCount =
-    (halalOnly ? 1 : 0) +
     (femaleStaff ? 1 : 0) +
     (cuisineTags.length > 0 ? 1 : 0) +
     (priceMax != null ? 1 : 0) +
@@ -102,7 +96,6 @@ export function VendorResults({
 
   function resetFilters() {
     setFemaleStaff(false);
-    setHalalOnly(false);
     setCuisineTags([]);
     setPriceMax(null);
     setMinRating(0);
@@ -221,13 +214,6 @@ export function VendorResults({
               onClick={() => setFemaleStaff(!femaleStaff)}
               label="Personnel féminin"
             />
-            {(category === "traiteur" || category === null) && (
-              <TogglePill
-                active={halalOnly}
-                onClick={() => setHalalOnly(!halalOnly)}
-                label="Halal certifié"
-              />
-            )}
             <RatingPill value={minRating} onChange={setMinRating} />
             <button
               type="button"

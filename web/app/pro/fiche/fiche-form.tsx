@@ -225,11 +225,6 @@ export function FicheForm({ venue }: { venue: Venue }) {
             onChange={(v) => set("stageAvailable", v)}
           />
           <CheckboxTile
-            label="Traiteur halal uniquement"
-            checked={draft.halalOnlyTraiteur}
-            onChange={(v) => set("halalOnlyTraiteur", v)}
-          />
-          <CheckboxTile
             label="Personnel féminin"
             checked={draft.femaleStaffAvailable}
             onChange={(v) => set("femaleStaffAvailable", v)}

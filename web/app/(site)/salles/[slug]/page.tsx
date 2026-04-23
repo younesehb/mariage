@@ -92,7 +92,6 @@ export default async function VenueDetailPage({
                       ? "Liste imposée"
                       : "Libre choix"
                 }
-                sub={venue.halalOnlyTraiteur ? "Halal uniquement" : "Halal et non-halal"}
               />
               <Fact
                 icon={AlignJustify}
