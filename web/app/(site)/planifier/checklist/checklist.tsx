@@ -22,7 +22,7 @@ import {
   type TaskPhase,
   type WeddingPlan,
 } from "@/lib/planner";
-import { ConfirmDialog } from "@/components/confirm-dialog";
+import { ConfirmDialog } from "@/components/dialogs/confirm-dialog";
 import { HelpCallout } from "@/components/help-callout";
 
 function genId() {

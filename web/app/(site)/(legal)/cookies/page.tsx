@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { CookieSettingsButton } from "@/components/cookie-settings-button";
+import { CookieSettingsButton } from "@/components/consent/cookie-settings-button";
 
 export const metadata: Metadata = {
   title: "Cookies · zaffa",

@@ -1,7 +1,7 @@
 import { AppBar } from "@/components/layout/app-bar";
 import { BottomNav } from "@/components/layout/bottom-nav";
 import { Footer } from "@/components/layout/footer";
-import { CookieBanner } from "@/components/cookie-banner";
+import { CookieBanner } from "@/components/consent/cookie-banner";
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (

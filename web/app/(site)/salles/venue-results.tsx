@@ -3,19 +3,19 @@
 import dynamic from "next/dynamic";
 import { useEffect, useMemo, useState } from "react";
 import { Map as MapIcon, List as ListIcon, X } from "lucide-react";
-import { FilterPill } from "@/components/filter-pill";
-import { FilterDrawer, defaultFilters, type FilterState } from "@/components/filter-drawer";
-import { ListingCard } from "@/components/listing-card";
-import { ListingRow } from "@/components/listing-row";
-import { ViewToggle, readViewPref, writeViewPref, type ListingView } from "@/components/view-toggle";
-import { GuestsDialog } from "@/components/guests-dialog";
+import { FilterPill } from "@/components/filters/filter-pill";
+import { FilterDrawer, defaultFilters, type FilterState } from "@/components/filters/filter-drawer";
+import { ListingCard } from "@/components/listing/listing-card";
+import { ListingRow } from "@/components/listing/listing-row";
+import { ViewToggle, readViewPref, writeViewPref, type ListingView } from "@/components/filters/view-toggle";
+import { GuestsDialog } from "./guests-dialog";
 import { HelpCallout } from "@/components/help-callout";
 import { venueBadges, venueToListing } from "@/lib/fixtures";
 import type { Venue } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { Sparkles } from "lucide-react";
 
-const VenueMap = dynamic(() => import("@/components/venue-map").then((m) => m.VenueMap), {
+const VenueMap = dynamic(() => import("@/components/map/venue-map").then((m) => m.VenueMap), {
   ssr: false,
   loading: () => (
     <div className="h-full w-full bg-surface-muted grid place-items-center text-sm text-ink-muted">

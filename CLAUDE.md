@@ -8,7 +8,7 @@ This is a monorepo-style layout with a single app. **All code lives in `web/`.**
 
 - `web/` — Next.js 16 + React 19 app (the product)
 - `design.md` — canonical design-system reference (tokens, motion, components, patterns, routing)
-- `docs/superpowers/specs/2026-04-22-wedding-planner-mvp-design.md` — the MVP spec (entities, flows, features)
+- `docs/specs/2026-04-22-wedding-planner-mvp-design.md` — the MVP spec (entities, flows, features)
 - `web/AGENTS.md` / `web/CLAUDE.md` — Next.js 16 warning (see below)
 
 ## Critical: this is Next.js 16, not the one you know

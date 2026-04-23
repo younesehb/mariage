@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowUpRight, Check, MapPin, Star, Sparkles } from "lucide-react";
-import { SearchBar } from "@/components/search-bar";
-import { ListingCard } from "@/components/listing-card";
+import { SearchBar } from "@/components/filters/search-bar";
+import { ListingCard } from "@/components/listing/listing-card";
 import {
   venues,
   venueToListing,

@@ -36,7 +36,7 @@ import { venues, vendors, venueToListing, vendorToListing } from "@/lib/fixtures
 import { CATEGORIES } from "@/lib/category-meta";
 import type { VendorCategory, Venue, Vendor } from "@/lib/types";
 import { PeekDrawer } from "./peek-drawer";
-import { ConfirmDialog } from "@/components/confirm-dialog";
+import { ConfirmDialog } from "@/components/dialogs/confirm-dialog";
 import { HelpCallout } from "@/components/help-callout";
 
 interface StepDef {

@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Heart, Send, Check } from "lucide-react";
-import { ListingCard } from "@/components/listing-card";
-import { BulkQuoteDialog } from "@/components/bulk-quote-dialog";
+import { ListingCard } from "@/components/listing/listing-card";
+import { BulkQuoteDialog } from "./bulk-quote-dialog";
 import { HelpCallout } from "@/components/help-callout";
 import { venueToListing } from "@/lib/fixtures";
 import type { Venue } from "@/lib/types";

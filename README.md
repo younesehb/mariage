@@ -39,7 +39,9 @@ bun run lint    # eslint (flat config)
 │   └── AGENTS.md        # Next.js 16 warning for AI tools
 ├── CLAUDE.md            # architecture + conventions (for Claude Code)
 ├── design.md            # canonical design-system reference
-└── docs/superpowers/    # specs + plans
+└── docs/
+    ├── specs/           # feature specs
+    └── plans/           # implementation plans
 ```
 
 ## Key design principles

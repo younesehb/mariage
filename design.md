@@ -273,7 +273,7 @@ Route groups: everything user-facing lives under `app/(site)/`. `/admin` and
 
 ## 9. Data model anchors
 
-Matches the spec at `docs/superpowers/specs/2026-04-22-wedding-planner-mvp-design.md`.
+Matches the spec at `docs/specs/2026-04-22-wedding-planner-mvp-design.md`.
 
 Key entities:
 - `Venue` — capacity, gender-separation, prayer/wudu, parking, curfews,

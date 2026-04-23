@@ -7,8 +7,8 @@ import { vendorToListing, reviewsFor, avgRating } from "@/lib/fixtures";
 import { CATEGORIES, CATEGORY_ORDER, CUISINE_TAGS } from "@/lib/category-meta";
 import type { Vendor, VendorCategory } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { ListingRow } from "@/components/listing-row";
-import { ViewToggle, readViewPref, writeViewPref, type ListingView } from "@/components/view-toggle";
+import { ListingRow } from "@/components/listing/listing-row";
+import { ViewToggle, readViewPref, writeViewPref, type ListingView } from "@/components/filters/view-toggle";
 import { HelpCallout } from "@/components/help-callout";
 
 const cities = ["Toutes", "Bruxelles", "Antwerpen", "Gent", "Liège", "Charleroi"];

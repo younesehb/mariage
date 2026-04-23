@@ -12,12 +12,12 @@ import {
   socialsFor,
   recentPostsFor,
 } from "@/lib/fixtures";
-import { PhotoMosaic } from "@/components/photo-mosaic";
-import { ReviewCard } from "@/components/review-card";
+import { PhotoMosaic } from "@/components/listing/photo-mosaic";
+import { ReviewCard } from "@/components/listing/review-card";
 import { InquiryCard } from "@/components/inquiry-card";
-import { ListingCard } from "@/components/listing-card";
+import { ListingCard } from "@/components/listing/listing-card";
 import { SocialLinks } from "@/components/social-links";
-import { RecentPosts } from "@/components/recent-posts";
+import { RecentPosts } from "@/components/listing/recent-posts";
 import { StarRating } from "@/components/ui/star-rating";
 
 export async function generateMetadata({
