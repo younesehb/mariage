@@ -1,6 +1,5 @@
 # Node
 node_modules/
-.pnpm-store/
 
 # Next
 web/.next/
@@ -17,3 +16,7 @@ web/.turbo/
 # Editor
 .vscode/
 .idea/
+
+# Claude Code (local agent state — not for commit)
+.claude/
+memory/
