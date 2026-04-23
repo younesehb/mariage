@@ -2,6 +2,7 @@ import Link from "next/link";
 import { MessageSquare, Clock, Check, X as XIcon, CalendarDays } from "lucide-react";
 import { findVenueBySlug } from "@/lib/fixtures";
 import { cn } from "@/lib/utils";
+import { HelpCallout } from "@/components/help-callout";
 
 type DemoStatus = "pending" | "accepted" | "declined";
 
@@ -65,10 +66,30 @@ function formatDate(iso: string) {
 export default function DemandesPage() {
   return (
     <div className="mx-auto max-w-[1280px] px-4 md:px-8 py-8 md:py-12">
-      <header className="mb-8">
+      <header className="mb-6">
         <div className="text-xs uppercase tracking-widest text-garnet font-semibold">Vos échanges</div>
         <h1 className="mt-1 font-serif text-3xl md:text-4xl text-ink">Demandes</h1>
       </header>
+
+      <HelpCallout
+        storageKey="demandes"
+        intro="Toutes les demandes de devis envoyées aux salles et prestataires, au même endroit."
+        steps={[
+          {
+            title: "Statuts",
+            body: "« En attente » : la salle n'a pas encore répondu. « Acceptée » : elle est disponible — vous pouvez planifier une visite. « Déclinée » : indisponible, choisissez-en une autre.",
+          },
+          {
+            title: "Délai de réponse",
+            body: "La plupart des salles répondent sous 48 h. Au-delà, une relance automatique leur est envoyée.",
+          },
+          {
+            title: "Comparez",
+            body: "Les réponses apparaissent en clair sous chaque demande. Gardez-les pour comparer traiteurs imposés, prix, créneaux.",
+          },
+        ]}
+        className="mb-6"
+      />
 
       {demoInquiries.length === 0 ? (
         <div className="py-24 text-center space-y-4">

@@ -62,7 +62,7 @@ export default function LoginPage() {
           </button>
         </form>
         <p className="text-sm text-ink-muted">
-          Pas de compte ? <Link href="/connexion?mode=signup" className="text-ink font-medium underline underline-offset-4">Créer un compte</Link>
+          Pas de compte ? <Link href="/inscription" className="text-ink font-medium underline underline-offset-4">Créer un compte</Link>
         </p>
       </div>
     </div>

@@ -155,4 +155,32 @@
       transparent 4px 8px
     );
   }
+  /* Long-form text rendering for legal/about pages */
+  .prose-zaffa h1 {
+    @apply font-serif text-3xl md:text-4xl text-ink mb-6;
+  }
+  .prose-zaffa h2 {
+    @apply font-serif text-xl md:text-2xl text-ink mt-10 mb-3;
+  }
+  .prose-zaffa h3 {
+    @apply font-sans text-base font-semibold text-ink mt-6 mb-2;
+  }
+  .prose-zaffa p {
+    @apply text-sm md:text-[15px] leading-relaxed text-ink-muted mb-4;
+  }
+  .prose-zaffa ul {
+    @apply list-disc pl-5 text-sm md:text-[15px] text-ink-muted space-y-1.5 mb-4;
+  }
+  .prose-zaffa a {
+    @apply text-ink font-medium underline underline-offset-4 hover:text-garnet;
+  }
+  .prose-zaffa strong {
+    @apply text-ink font-semibold;
+  }
+  .prose-zaffa hr {
+    @apply my-8 border-hairline;
+  }
+  .prose-zaffa .lede {
+    @apply text-[15px] md:text-base text-ink-muted leading-relaxed mb-6;
+  }
 }

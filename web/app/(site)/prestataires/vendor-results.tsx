@@ -1,12 +1,15 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Search, SlidersHorizontal, Star, X } from "lucide-react";
 import { vendorToListing, reviewsFor, avgRating } from "@/lib/fixtures";
 import { CATEGORIES, CATEGORY_ORDER, CUISINE_TAGS } from "@/lib/category-meta";
 import type { Vendor, VendorCategory } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { ListingRow } from "@/components/listing-row";
+import { ViewToggle, readViewPref, writeViewPref, type ListingView } from "@/components/view-toggle";
+import { HelpCallout } from "@/components/help-callout";
 
 const cities = ["Toutes", "Bruxelles", "Antwerpen", "Gent", "Liège", "Charleroi"];
 
@@ -30,6 +33,14 @@ export function VendorResults({
   const [q, setQ] = useState("");
   const [sort, setSort] = useState<Sort>("rating");
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [view, setView] = useState<ListingView>("grid");
+
+  useEffect(() => {
+    setView(readViewPref());
+  }, []);
+  useEffect(() => {
+    writeViewPref(view);
+  }, [view]);
 
   const withMeta = useMemo(
     () =>
@@ -252,7 +263,26 @@ export function VendorResults({
 
       {/* Results */}
       <div className="mx-auto max-w-[1280px] px-4 md:px-8 py-8">
-        <div className="mb-5 flex items-baseline justify-between gap-4">
+        <HelpCallout
+          storageKey="prestataires"
+          intro="Traiteurs, ziana, photographes, hennaya, groupes nachid… tous les corps de métier au même endroit."
+          steps={[
+            {
+              title: "Choisissez la catégorie",
+              body: "Les pastilles en haut filtrent par métier. Chaque catégorie a ses propres critères (cuisine pour les traiteurs, personnel féminin pour hennaya, etc.).",
+            },
+            {
+              title: "Affinez",
+              body: "Ville, rayon de déplacement, budget, personnel féminin — ouvrez « Filtres » pour tous les voir.",
+            },
+            {
+              title: "Regardez Instagram",
+              body: "La plupart des prestataires communiquent surtout via Instagram. Leur fiche détail montre leurs derniers posts — un excellent indicateur de leur style.",
+            },
+          ]}
+          className="mb-5"
+        />
+        <div className="mb-5 flex items-center justify-between gap-4 flex-wrap">
           <p className="text-sm text-ink">
             <span className="font-medium">{filtered.length}</span>{" "}
             <span className="text-ink-muted">
@@ -260,15 +290,18 @@ export function VendorResults({
               {city !== "Toutes" ? ` à ${city}` : ""}
             </span>
           </p>
-          {activeFilterCount > 0 && (
-            <button
-              type="button"
-              onClick={resetFilters}
-              className="text-xs font-medium text-garnet underline underline-offset-4"
-            >
-              Effacer les filtres
-            </button>
-          )}
+          <div className="flex items-center gap-3">
+            {activeFilterCount > 0 && (
+              <button
+                type="button"
+                onClick={resetFilters}
+                className="text-xs font-medium text-garnet underline underline-offset-4"
+              >
+                Effacer les filtres
+              </button>
+            )}
+            <ViewToggle value={view} onChange={setView} />
+          </div>
         </div>
 
         {filtered.length === 0 ? (
@@ -290,10 +323,16 @@ export function VendorResults({
               Tout réinitialiser
             </button>
           </div>
-        ) : (
+        ) : view === "grid" ? (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {filtered.map((v) => (
               <VendorCard key={v.id} vendor={v} />
+            ))}
+          </div>
+        ) : (
+          <div className="flex flex-col gap-3">
+            {filtered.map((v) => (
+              <ListingRow key={v.id} listing={vendorToListing(v)} />
             ))}
           </div>
         )}

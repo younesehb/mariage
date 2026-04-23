@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, MapPin, Users, Clock, Music, Car, ShieldCheck, HeartHandshake, AlignJustify } from "lucide-react";
@@ -18,6 +19,26 @@ import { ListingCard } from "@/components/listing-card";
 import { SocialLinks } from "@/components/social-links";
 import { RecentPosts } from "@/components/recent-posts";
 import { StarRating } from "@/components/ui/star-rating";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const venue = findVenueBySlug(slug);
+  if (!venue) return { title: "Salle introuvable · zaffa" };
+  const title = `${venue.name} — ${venue.city} · zaffa`;
+  const description = `Capacité ${venue.capacityMin}–${venue.capacityMax} invités${
+    venue.neighborhood ? `, ${venue.neighborhood}` : ""
+  }, ${venue.city}. Voir la fiche complète et demander la disponibilité.`;
+  return {
+    title,
+    description,
+    openGraph: { title, description, type: "website" },
+    twitter: { card: "summary_large_image", title, description },
+  };
+}
 
 export default async function VenueDetailPage({
   params,

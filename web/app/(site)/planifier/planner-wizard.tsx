@@ -15,6 +15,8 @@ import {
   ExternalLink,
   ChevronRight,
   Trash2,
+  Wallet,
+  CheckSquare,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -24,6 +26,8 @@ import {
   savePlan,
   daysUntil,
   planCompleteness,
+  budgetTotals,
+  guestTotals,
   type WeddingPlan,
   type PickKey,
   type PickValue,
@@ -32,6 +36,8 @@ import { venues, vendors, venueToListing, vendorToListing } from "@/lib/fixtures
 import { CATEGORIES } from "@/lib/category-meta";
 import type { VendorCategory, Venue, Vendor } from "@/lib/types";
 import { PeekDrawer } from "./peek-drawer";
+import { ConfirmDialog } from "@/components/confirm-dialog";
+import { HelpCallout } from "@/components/help-callout";
 
 interface StepDef {
   id: number;
@@ -62,6 +68,7 @@ export function PlannerWizard() {
   const [step, setStep] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const [peek, setPeek] = useState<PeekSubject>(null);
+  const [resetOpen, setResetOpen] = useState(false);
 
   // Hydrate from localStorage once
   useEffect(() => {
@@ -102,13 +109,16 @@ export function PlannerWizard() {
   const countdown = daysUntil(plan.weddingDate);
 
   function resetPlan() {
-    if (typeof window === "undefined") return;
-    if (!window.confirm("Effacer tout le plan et recommencer ?")) return;
     const fresh = emptyPlan();
     setPlan(fresh);
     setStep(0);
     toast.success("Plan réinitialisé");
   }
+
+  const budget = budgetTotals(plan);
+  const guests = guestTotals(plan);
+  const doneTasks = plan.tasks.filter((t) => t.done).length;
+  const tasksPct = plan.tasks.length > 0 ? Math.round((doneTasks / plan.tasks.length) * 100) : 0;
 
   return (
     <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-b from-surface via-surface to-garnet-soft/30">
@@ -205,9 +215,117 @@ export function PlannerWizard() {
             </ul>
           </nav>
 
+          {/* Tools */}
+          <div className="space-y-2">
+            <div className="text-[10px] font-semibold uppercase tracking-widest text-ink-muted px-1">
+              Outils
+            </div>
+
+            <Link
+              href="/planifier/budget"
+              className="group block rounded-xl border border-hairline bg-card p-4 transition-all hover:border-ink-muted hover:shadow-e1"
+            >
+              <div className="flex items-center gap-2">
+                <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-garnet/10 text-garnet">
+                  <Wallet className="h-3.5 w-3.5" strokeWidth={1.75} />
+                </span>
+                <span className="text-sm font-semibold text-ink">Budget</span>
+                <ChevronRight className="ml-auto h-4 w-4 text-ink-muted group-hover:translate-x-0.5 transition-transform" strokeWidth={1.75} />
+              </div>
+              {plan.budgetTotal > 0 ? (
+                <div className="mt-2 space-y-1.5">
+                  <div className="flex items-baseline justify-between text-xs">
+                    <span className="text-ink-muted">Dépensé</span>
+                    <span className="font-medium text-ink tabular-nums">
+                      {new Intl.NumberFormat("fr-BE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(budget.spent)}
+                      <span className="text-ink-muted"> / {new Intl.NumberFormat("fr-BE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(plan.budgetTotal)}</span>
+                    </span>
+                  </div>
+                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface-muted">
+                    <div
+                      className="h-full bg-garnet transition-all"
+                      style={{
+                        width: `${Math.min(100, (budget.spent / Math.max(1, plan.budgetTotal)) * 100)}%`,
+                      }}
+                    />
+                  </div>
+                </div>
+              ) : (
+                <p className="mt-2 text-xs text-ink-muted leading-snug">
+                  Définir votre enveloppe et la répartir par poste.
+                </p>
+              )}
+            </Link>
+
+            <Link
+              href="/planifier/invites"
+              className="group block rounded-xl border border-hairline bg-card p-4 transition-all hover:border-ink-muted hover:shadow-e1"
+            >
+              <div className="flex items-center gap-2">
+                <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-garnet/10 text-garnet">
+                  <Users className="h-3.5 w-3.5" strokeWidth={1.75} />
+                </span>
+                <span className="text-sm font-semibold text-ink">Invités</span>
+                <ChevronRight className="ml-auto h-4 w-4 text-ink-muted group-hover:translate-x-0.5 transition-transform" strokeWidth={1.75} />
+              </div>
+              {plan.guests.length > 0 ? (
+                <div className="mt-2 text-xs">
+                  <div className="flex items-baseline justify-between">
+                    <span className="text-ink-muted">Confirmés</span>
+                    <span className="font-medium text-ink tabular-nums">
+                      {guests.yes} / {plan.guests.length}
+                    </span>
+                  </div>
+                  {plan.days === 2 ? (
+                    <div className="mt-1 flex gap-2 text-[11px] text-ink-muted">
+                      <span>J1 : <span className="text-ink font-medium">{guests.day1}</span></span>
+                      <span>·</span>
+                      <span>J2 : <span className="text-ink font-medium">{guests.day2}</span></span>
+                    </div>
+                  ) : (
+                    <div className="mt-1 text-[11px] text-ink-muted">
+                      {guests.pending > 0 && <span>{guests.pending} en attente</span>}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <p className="mt-2 text-xs text-ink-muted leading-snug">
+                  Lister les invités, RSVP, repas.
+                </p>
+              )}
+            </Link>
+
+            <Link
+              href="/planifier/checklist"
+              className="group block rounded-xl border border-hairline bg-card p-4 transition-all hover:border-ink-muted hover:shadow-e1"
+            >
+              <div className="flex items-center gap-2">
+                <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-garnet/10 text-garnet">
+                  <CheckSquare className="h-3.5 w-3.5" strokeWidth={1.75} />
+                </span>
+                <span className="text-sm font-semibold text-ink">Checklist</span>
+                <ChevronRight className="ml-auto h-4 w-4 text-ink-muted group-hover:translate-x-0.5 transition-transform" strokeWidth={1.75} />
+              </div>
+              <div className="mt-2 space-y-1.5">
+                <div className="flex items-baseline justify-between text-xs">
+                  <span className="text-ink-muted">Progression</span>
+                  <span className="font-medium text-ink tabular-nums">
+                    {doneTasks} / {plan.tasks.length} · {tasksPct}%
+                  </span>
+                </div>
+                <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface-muted">
+                  <div
+                    className="h-full bg-garnet transition-all"
+                    style={{ width: `${tasksPct}%` }}
+                  />
+                </div>
+              </div>
+            </Link>
+          </div>
+
           <button
             type="button"
-            onClick={resetPlan}
+            onClick={() => setResetOpen(true)}
             className="inline-flex items-center gap-1.5 text-xs text-ink-muted hover:text-error transition-colors"
           >
             <Trash2 className="h-3 w-3" strokeWidth={1.5} />
@@ -217,6 +335,25 @@ export function PlannerWizard() {
 
         {/* Main step area */}
         <main className="min-w-0">
+          <HelpCallout
+            storageKey="planifier"
+            intro="L'assistant vous guide pas à pas pour préparer votre mariage."
+            steps={[
+              {
+                title: "8 étapes, à votre rythme",
+                body: "Vos noms, le cadre, la salle, le traiteur, ambiance, mariée, photo, récap. Vous pouvez revenir en arrière à tout moment.",
+              },
+              {
+                title: "Un ou deux jours",
+                body: "À l'étape « Le cadre », activez « 2 jours » pour configurer une journée hommes et une journée femmes, avec des capacités distinctes.",
+              },
+              {
+                title: "Outils en barre latérale",
+                body: "Budget, Invités, Checklist sont accessibles à gauche pendant toute la navigation. Vos choix sont enregistrés localement.",
+              },
+            ]}
+            className="mb-6"
+          />
           <div
             key={step}
             className="animate-in fade-in slide-in-from-bottom-6 duration-500"
@@ -281,6 +418,18 @@ export function PlannerWizard() {
           });
         }}
       />
+
+      <ConfirmDialog
+        open={resetOpen}
+        onOpenChange={setResetOpen}
+        title="Recommencer à zéro ?"
+        description="Tous vos choix, favoris et données budget de ce plan seront effacés. Cette action est irréversible."
+        confirmLabel="Effacer le plan"
+        cancelLabel="Annuler"
+        tone="destructive"
+        icon={<Trash2 className="h-4 w-4" strokeWidth={1.75} />}
+        onConfirm={resetPlan}
+      />
     </div>
   );
 }
@@ -324,6 +473,8 @@ function StepVous({
   plan: WeddingPlan;
   update: <K extends keyof WeddingPlan>(k: K, v: WeddingPlan[K]) => void;
 }) {
+  // Freeze "today" at mount so server and client renders agree on the date input's min.
+  const [minDate] = useState(() => new Date().toISOString().slice(0, 10));
   return (
     <>
       <StepHeader
@@ -357,7 +508,7 @@ function StepVous({
                 type="date"
                 value={plan.weddingDate ?? ""}
                 onChange={(e) => update("weddingDate", e.target.value || null)}
-                min={new Date().toISOString().slice(0, 10)}
+                min={minDate}
                 className="flex-1 bg-transparent text-base outline-none"
               />
             </div>
@@ -910,6 +1061,11 @@ function StepRecap({
                 />
               );
             })}
+            <NextAction
+              title="Suivre mon budget par poste"
+              href="/planifier/budget"
+              icon={Wallet}
+            />
             <NextAction
               title="Envoyer par email à la famille"
               onClick={() => toast.success("Un récapitulatif sera envoyé bientôt (démo)")}

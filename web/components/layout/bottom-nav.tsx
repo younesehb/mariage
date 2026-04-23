@@ -9,7 +9,7 @@ const tabs = [
   { href: "/salles", label: "Recherche", icon: Search, match: ["/salles", "/prestataires", "/"] },
   { href: "/favoris", label: "Favoris", icon: Heart, match: ["/favoris"] },
   { href: "/demandes", label: "Demandes", icon: MessageSquare, match: ["/demandes"] },
-  { href: "/profil", label: "Profil", icon: User, match: ["/profil", "/connexion"] },
+  { href: "/profil", label: "Profil", icon: User, match: ["/profil", "/connexion", "/inscription"] },
 ];
 
 export function BottomNav() {

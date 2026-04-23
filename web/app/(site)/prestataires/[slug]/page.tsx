@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, MessageCircle, Mail, Truck, Utensils, Users, MapPin } from "lucide-react";
@@ -18,6 +19,26 @@ import { ListingCard } from "@/components/listing-card";
 import { SocialLinks } from "@/components/social-links";
 import { RecentPosts } from "@/components/recent-posts";
 import { StarRating } from "@/components/ui/star-rating";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const v = findVendorBySlug(slug);
+  if (!v) return { title: "Prestataire introuvable · zaffa" };
+  const categoryLabel = CATEGORY_LABELS_FR[v.category] ?? "Prestataire";
+  const title = `${v.name} — ${categoryLabel} · zaffa`;
+  const cities = v.serviceCities.slice(0, 2).join(", ");
+  const description = `${categoryLabel} pour mariage${cities ? ` (${cities})` : ""}. Voir la fiche, les avis et contacter directement.`;
+  return {
+    title,
+    description,
+    openGraph: { title, description, type: "website" },
+    twitter: { card: "summary_large_image", title, description },
+  };
+}
 
 export default async function VendorDetailPage({
   params,

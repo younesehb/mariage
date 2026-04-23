@@ -1,11 +1,15 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Map as MapIcon, List as ListIcon, X } from "lucide-react";
 import { FilterPill } from "@/components/filter-pill";
 import { FilterDrawer, defaultFilters, type FilterState } from "@/components/filter-drawer";
 import { ListingCard } from "@/components/listing-card";
+import { ListingRow } from "@/components/listing-row";
+import { ViewToggle, readViewPref, writeViewPref, type ListingView } from "@/components/view-toggle";
+import { GuestsDialog } from "@/components/guests-dialog";
+import { HelpCallout } from "@/components/help-callout";
 import { venueBadges, venueToListing } from "@/lib/fixtures";
 import type { Venue } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -37,6 +41,16 @@ export function VenueResults({ venues, initialCity, initialGuests, initialDays =
   const [filters, setFilters] = useState<FilterState>(defaultFilters);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [mobileView, setMobileView] = useState<"list" | "map">("list");
+  const [view, setView] = useState<ListingView>("grid");
+  const [guestsOpen, setGuestsOpen] = useState(false);
+
+  useEffect(() => {
+    setView(readViewPref());
+  }, []);
+
+  useEffect(() => {
+    writeViewPref(view);
+  }, [view]);
 
   const filtered = useMemo(() => {
     return venues.filter((v) => {
@@ -89,10 +103,7 @@ export function VenueResults({ venues, initialCity, initialGuests, initialDays =
             </select>
             <FilterPill
               active={!!guests}
-              onClick={() => {
-                const v = prompt("Nombre d'invités", String(guests ?? 300));
-                if (v) setGuests(Math.max(1, parseInt(v, 10) || 0));
-              }}
+              onClick={() => setGuestsOpen(true)}
             >
               {guests ? `${guests} invités` : "Invités"}
             </FilterPill>
@@ -116,21 +127,43 @@ export function VenueResults({ venues, initialCity, initialGuests, initialDays =
       {/* Desktop: two-pane layout */}
       <div className="hidden md:grid md:grid-cols-[1fr_minmax(0,560px)] mx-auto max-w-[1280px] gap-8 px-8 py-6">
         <div>
+          <HelpCallout
+            storageKey="salles"
+            intro="Trouvez la salle qui colle à votre mariage — sans faire 15 WhatsApp."
+            steps={[
+              {
+                title: "Filtrez rapidement",
+                body: "Ville, nombre d'invités, jours, gamme de prix. Le bouton « Filtres » ouvre tout : séparation hommes/femmes, espace prière, traiteur imposé ou libre, couvre-feu, etc.",
+              },
+              {
+                title: "Survolez la carte",
+                body: "Passer la souris sur une carte met en évidence le pin correspondant sur la carte — et inversement.",
+              },
+              {
+                title: "Ajoutez aux favoris",
+                body: "Cliquez sur le ♡ pour enregistrer. Dans Favoris, vous pourrez demander un devis à plusieurs salles en même temps.",
+              },
+            ]}
+            className="mb-4"
+          />
           <div className="mb-4 flex items-end justify-between">
             <h1 className="font-serif text-2xl">
               <span className="text-ink">{filtered.length}</span>{" "}
               <span className="text-ink-muted">salles à {city}</span>
             </h1>
+            <ViewToggle value={view} onChange={setView} />
           </div>
-          <div className="grid grid-cols-2 gap-5">
-            {listings.length === 0 ? (
-              <EmptyState onReset={() => {
+          {listings.length === 0 ? (
+            <EmptyState
+              onReset={() => {
                 setPriceTier("any");
                 setFilters(defaultFilters);
                 setGuests(undefined);
-              }} />
-            ) : (
-              listings.map((l) => (
+              }}
+            />
+          ) : view === "grid" ? (
+            <div className="grid grid-cols-2 gap-5">
+              {listings.map((l) => (
                 <div
                   key={l.id}
                   onMouseEnter={() => setActiveId(l.id)}
@@ -138,9 +171,21 @@ export function VenueResults({ venues, initialCity, initialGuests, initialDays =
                 >
                   <ListingCard listing={l} size="sm" />
                 </div>
-              ))
-            )}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col gap-3">
+              {listings.map((l) => (
+                <div
+                  key={l.id}
+                  onMouseEnter={() => setActiveId(l.id)}
+                  onMouseLeave={() => setActiveId(null)}
+                >
+                  <ListingRow listing={l} />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
         <div className="sticky top-[140px] h-[calc(100vh-160px)] rounded-xl overflow-hidden border border-hairline">
           <VenueMap listings={listings} activeId={activeId} onSelectListing={setActiveId} />
@@ -151,21 +196,34 @@ export function VenueResults({ venues, initialCity, initialGuests, initialDays =
       <div className="md:hidden">
         {mobileView === "list" ? (
           <div className="mx-auto max-w-[1280px] px-4 py-4">
-            <h1 className="mb-4 font-serif text-xl">
-              <span className="text-ink">{filtered.length}</span>{" "}
-              <span className="text-ink-muted">salles à {city}</span>
-            </h1>
-            <div className="grid grid-cols-1 gap-5">
-              {listings.length === 0 ? (
-                <EmptyState onReset={() => {
+            <div className="mb-4 flex items-end justify-between gap-3">
+              <h1 className="font-serif text-xl">
+                <span className="text-ink">{filtered.length}</span>{" "}
+                <span className="text-ink-muted">salles à {city}</span>
+              </h1>
+              <ViewToggle value={view} onChange={setView} />
+            </div>
+            {listings.length === 0 ? (
+              <EmptyState
+                onReset={() => {
                   setPriceTier("any");
                   setFilters(defaultFilters);
                   setGuests(undefined);
-                }} />
-              ) : (
-                listings.map((l) => <ListingCard key={l.id} listing={l} size="md" />)
-              )}
-            </div>
+                }}
+              />
+            ) : view === "grid" ? (
+              <div className="grid grid-cols-1 gap-5">
+                {listings.map((l) => (
+                  <ListingCard key={l.id} listing={l} size="md" />
+                ))}
+              </div>
+            ) : (
+              <div className="flex flex-col gap-3">
+                {listings.map((l) => (
+                  <ListingRow key={l.id} listing={l} />
+                ))}
+              </div>
+            )}
           </div>
         ) : (
           <div className="fixed inset-0 top-[112px] bottom-16 z-20">
@@ -211,6 +269,14 @@ export function VenueResults({ venues, initialCity, initialGuests, initialDays =
           )}
         </button>
       </div>
+
+      <GuestsDialog
+        open={guestsOpen}
+        onOpenChange={setGuestsOpen}
+        value={guests}
+        onSubmit={(n) => setGuests(n)}
+        onClear={() => setGuests(undefined)}
+      />
     </>
   );
 }

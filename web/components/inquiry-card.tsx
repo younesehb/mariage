@@ -19,6 +19,19 @@ function formatDateFR(iso: string | null): string {
   return d.toLocaleDateString("fr-BE", { weekday: "short", day: "numeric", month: "long", year: "numeric" });
 }
 
+function useDateRange() {
+  // Freeze at component mount so server and client renders agree on min/max
+  // even if the render crosses midnight or server/client clocks differ slightly.
+  const [range] = useState(() => {
+    const now = new Date();
+    return {
+      min: now.toISOString().slice(0, 10),
+      max: addMonths(now, 24).toISOString().slice(0, 10),
+    };
+  });
+  return range;
+}
+
 export function InquiryCard({
   venue,
   placement,
@@ -346,6 +359,7 @@ function DateField({
   value: string;
   onChange: (v: string) => void;
 }) {
+  const { min, max } = useDateRange();
   return (
     <Field label={label}>
       <label className="flex items-center gap-2 rounded-lg border border-hairline bg-card px-3 py-3 focus-within:border-ink">
@@ -354,8 +368,8 @@ function DateField({
           type="date"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          min={new Date().toISOString().slice(0, 10)}
-          max={addMonths(new Date(), 24).toISOString().slice(0, 10)}
+          min={min}
+          max={max}
           className="flex-1 bg-transparent text-sm outline-none"
         />
       </label>
