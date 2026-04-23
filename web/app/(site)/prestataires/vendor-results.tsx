@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowUpRight, Search, SlidersHorizontal, Star, X } from "lucide-react";
+import { Search, SlidersHorizontal, Star, X } from "lucide-react";
 import { vendorToListing, reviewsFor, avgRating } from "@/lib/fixtures";
 import { CATEGORIES, CATEGORY_ORDER, CUISINE_TAGS } from "@/lib/category-meta";
 import type { Vendor, VendorCategory } from "@/lib/types";
@@ -110,58 +110,6 @@ export function VendorResults({
 
   return (
     <>
-      {/* Category landing (no category picked) */}
-      {!category && (
-        <section className="mx-auto max-w-[1280px] px-6 md:px-10 pt-10 md:pt-16 pb-6">
-          <div className="text-xs uppercase tracking-widest text-garnet font-semibold">Prestataires</div>
-          <h1 className="mt-1 font-serif text-4xl md:text-5xl leading-[1.05] text-ink max-w-2xl">
-            Tout ce qui fait un <span className="italic text-garnet">mariage marocain</span>.
-          </h1>
-          <p className="mt-4 text-ink/80 max-w-xl">
-            Sélectionnez une catégorie pour découvrir les prestataires disponibles en Belgique.
-          </p>
-
-          <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-4">
-            {CATEGORY_ORDER.map((cat) => {
-              const meta = CATEGORIES[cat];
-              const Icon = meta.icon;
-              const count = countForCategory(cat);
-              return (
-                <button
-                  key={cat}
-                  type="button"
-                  onClick={() => setCategory(cat)}
-                  className="group text-left rounded-xl border border-hairline bg-card p-5 transition-all hover:border-ink hover:-translate-y-0.5 hover:shadow-e1"
-                >
-                  <div
-                    className={cn(
-                      "h-11 w-11 rounded-lg grid place-items-center mb-4",
-                      meta.tint,
-                    )}
-                    aria-hidden
-                  >
-                    <Icon className={cn("h-5 w-5", meta.accentFg)} strokeWidth={1.5} />
-                  </div>
-                  <div className="font-serif text-xl text-ink leading-tight">{meta.labelFr}</div>
-                  <p className="mt-1 text-xs text-ink-muted leading-relaxed line-clamp-2">
-                    {meta.taglineFr}
-                  </p>
-                  <div className="mt-3 flex items-center justify-between">
-                    <span className="text-[11px] font-semibold uppercase tracking-wider text-ink-muted">
-                      {count} prestataire{count > 1 ? "s" : ""}
-                    </span>
-                    <ArrowUpRight
-                      className="h-4 w-4 text-ink-muted group-hover:text-garnet group-hover:rotate-12 transition-all"
-                      strokeWidth={1.5}
-                    />
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-        </section>
-      )}
-
       {/* Category hero (category selected) */}
       {catMeta && (
         <section className="border-b border-hairline bg-surface-muted/40">
