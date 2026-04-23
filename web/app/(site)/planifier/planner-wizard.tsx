@@ -31,6 +31,7 @@ import {
 import { venues, vendors, venueToListing, vendorToListing } from "@/lib/fixtures";
 import { CATEGORIES } from "@/lib/category-meta";
 import type { VendorCategory, Venue, Vendor } from "@/lib/types";
+import { PeekDrawer } from "./peek-drawer";
 
 interface StepDef {
   id: number;
@@ -51,10 +52,16 @@ const STEPS: StepDef[] = [
   { id: 7, key: "recap", label: "Récapitulatif", tagline: "Tout est prêt ?", icon: Sparkles },
 ];
 
+type PeekSubject =
+  | { kind: "venue"; venue: Venue; pickKey: PickKey }
+  | { kind: "vendor"; vendor: Vendor; pickKey: PickKey }
+  | null;
+
 export function PlannerWizard() {
   const [plan, setPlan] = useState<WeddingPlan>(emptyPlan);
   const [step, setStep] = useState(0);
   const [loaded, setLoaded] = useState(false);
+  const [peek, setPeek] = useState<PeekSubject>(null);
 
   // Hydrate from localStorage once
   useEffect(() => {
@@ -216,11 +223,11 @@ export function PlannerWizard() {
           >
             {step === 0 && <StepVous plan={plan} update={update} />}
             {step === 1 && <StepCadre plan={plan} update={update} />}
-            {step === 2 && <StepVenue plan={plan} setPick={setPick} />}
-            {step === 3 && <StepVendorCategory plan={plan} setPick={setPick} category="traiteur" />}
-            {step === 4 && <StepAmbiance plan={plan} setPick={setPick} />}
-            {step === 5 && <StepMariee plan={plan} setPick={setPick} />}
-            {step === 6 && <StepMedia plan={plan} setPick={setPick} />}
+            {step === 2 && <StepVenue plan={plan} setPick={setPick} openPeek={setPeek} />}
+            {step === 3 && <StepVendorCategory plan={plan} setPick={setPick} category="traiteur" openPeek={setPeek} />}
+            {step === 4 && <StepAmbiance plan={plan} setPick={setPick} openPeek={setPeek} />}
+            {step === 5 && <StepMariee plan={plan} setPick={setPick} openPeek={setPeek} />}
+            {step === 6 && <StepMedia plan={plan} setPick={setPick} openPeek={setPeek} />}
             {step === 7 && <StepRecap plan={plan} goToStep={setStep} />}
           </div>
 
@@ -251,6 +258,29 @@ export function PlannerWizard() {
           ) : null}
         </main>
       </div>
+
+      <PeekDrawer
+        open={peek != null}
+        onClose={() => setPeek(null)}
+        subject={peek ? (peek.kind === "venue" ? { kind: "venue", venue: peek.venue } : { kind: "vendor", vendor: peek.vendor }) : null}
+        alreadyPicked={Boolean(
+          peek &&
+            plan.picks[peek.pickKey]?.kind === "picked" &&
+            (plan.picks[peek.pickKey] as { id: string }).id ===
+              (peek.kind === "venue" ? peek.venue.id : peek.vendor.id),
+        )}
+        onPick={() => {
+          if (!peek) return;
+          const s = peek.kind === "venue" ? peek.venue : peek.vendor;
+          setPick(peek.pickKey, {
+            kind: "picked",
+            id: s.id,
+            slug: s.slug,
+            name: s.name,
+            ...(peek.kind === "vendor" ? { category: peek.vendor.category } : {}),
+          });
+        }}
+      />
     </div>
   );
 }
@@ -476,9 +506,11 @@ function StepCadre({
 function StepVenue({
   plan,
   setPick,
+  openPeek,
 }: {
   plan: WeddingPlan;
   setPick: (k: PickKey, v: PickValue) => void;
+  openPeek: (s: PeekSubject) => void;
 }) {
   const eligible = useMemo(() => {
     return venues
@@ -520,9 +552,7 @@ function StepVenue({
             key={v.id}
             venue={v}
             active={current?.kind === "picked" && current.id === v.id}
-            onPick={() =>
-              setPick("venue", { kind: "picked", id: v.id, slug: v.slug, name: v.name })
-            }
+            onOpen={() => openPeek({ kind: "venue", venue: v, pickKey: "venue" })}
           />
         ))}
       </div>
@@ -549,10 +579,12 @@ function StepVendorCategory({
   plan,
   setPick,
   category,
+  openPeek,
 }: {
   plan: WeddingPlan;
   setPick: (k: PickKey, v: PickValue) => void;
   category: VendorCategory;
+  openPeek: (s: PeekSubject) => void;
 }) {
   const meta = CATEGORIES[category];
   const list = useMemo(
@@ -584,9 +616,7 @@ function StepVendorCategory({
             key={v.id}
             vendor={v}
             active={current?.kind === "picked" && current.id === v.id}
-            onPick={() =>
-              setPick(category, { kind: "picked", id: v.id, slug: v.slug, name: v.name, category })
-            }
+            onOpen={() => openPeek({ kind: "vendor", vendor: v, pickKey: category })}
           />
         ))}
       </div>
@@ -618,9 +648,11 @@ function StepVendorCategory({
 function StepAmbiance({
   plan,
   setPick,
+  openPeek,
 }: {
   plan: WeddingPlan;
   setPick: (k: PickKey, v: PickValue) => void;
+  openPeek: (s: PeekSubject) => void;
 }) {
   return (
     <>
@@ -630,8 +662,8 @@ function StepAmbiance({
         tagline="La ziana fait tout le décor (trône, arches, lumières). Le groupe nachid donne l'âme musicale à la cérémonie."
       />
       <div className="space-y-8">
-        <MiniCategorySection plan={plan} setPick={setPick} category="ziana" />
-        <MiniCategorySection plan={plan} setPick={setPick} category="nasheed" />
+        <MiniCategorySection plan={plan} setPick={setPick} openPeek={openPeek} category="ziana" />
+        <MiniCategorySection plan={plan} setPick={setPick} openPeek={openPeek} category="nasheed" />
       </div>
     </>
   );
@@ -640,9 +672,11 @@ function StepAmbiance({
 function StepMariee({
   plan,
   setPick,
+  openPeek,
 }: {
   plan: WeddingPlan;
   setPick: (k: PickKey, v: PickValue) => void;
+  openPeek: (s: PeekSubject) => void;
 }) {
   return (
     <>
@@ -652,9 +686,9 @@ function StepMariee({
         tagline="La tayyaba coiffe et maquille, la hennaya pour la soirée du henné, la négafa pour les changements de tenues."
       />
       <div className="space-y-8">
-        <MiniCategorySection plan={plan} setPick={setPick} category="tayyaba" />
-        <MiniCategorySection plan={plan} setPick={setPick} category="hennaya" />
-        <MiniCategorySection plan={plan} setPick={setPick} category="negafa" />
+        <MiniCategorySection plan={plan} setPick={setPick} openPeek={openPeek} category="tayyaba" />
+        <MiniCategorySection plan={plan} setPick={setPick} openPeek={openPeek} category="hennaya" />
+        <MiniCategorySection plan={plan} setPick={setPick} openPeek={openPeek} category="negafa" />
       </div>
     </>
   );
@@ -663,9 +697,11 @@ function StepMariee({
 function StepMedia({
   plan,
   setPick,
+  openPeek,
 }: {
   plan: WeddingPlan;
   setPick: (k: PickKey, v: PickValue) => void;
+  openPeek: (s: PeekSubject) => void;
 }) {
   return (
     <>
@@ -675,8 +711,8 @@ function StepMedia({
         tagline="Photographe pour l'album, vidéaste pour revivre le jour — les deux sont complémentaires."
       />
       <div className="space-y-8">
-        <MiniCategorySection plan={plan} setPick={setPick} category="photographer" />
-        <MiniCategorySection plan={plan} setPick={setPick} category="videographer" />
+        <MiniCategorySection plan={plan} setPick={setPick} openPeek={openPeek} category="photographer" />
+        <MiniCategorySection plan={plan} setPick={setPick} openPeek={openPeek} category="videographer" />
       </div>
     </>
   );
@@ -685,10 +721,12 @@ function StepMedia({
 function MiniCategorySection({
   plan,
   setPick,
+  openPeek,
   category,
 }: {
   plan: WeddingPlan;
   setPick: (k: PickKey, v: PickValue) => void;
+  openPeek: (s: PeekSubject) => void;
   category: VendorCategory;
 }) {
   const meta = CATEGORIES[category];
@@ -728,9 +766,7 @@ function MiniCategorySection({
               key={v.id}
               vendor={v}
               active={current?.kind === "picked" && current.id === v.id}
-              onPick={() =>
-                setPick(category, { kind: "picked", id: v.id, slug: v.slug, name: v.name, category })
-              }
+              onOpen={() => openPeek({ kind: "vendor", vendor: v, pickKey: category })}
             />
           ))}
         </div>
@@ -961,17 +997,17 @@ function GuestStepper({
 function PickableVenue({
   venue,
   active,
-  onPick,
+  onOpen,
 }: {
   venue: Venue;
   active: boolean;
-  onPick: () => void;
+  onOpen: () => void;
 }) {
   const listing = venueToListing(venue);
   return (
     <button
       type="button"
-      onClick={onPick}
+      onClick={onOpen}
       aria-pressed={active}
       className={cn(
         "group text-left rounded-xl border bg-card transition-all overflow-hidden",
@@ -1007,18 +1043,18 @@ function PickableVenue({
 function PickableVendor({
   vendor,
   active,
-  onPick,
+  onOpen,
 }: {
   vendor: Vendor;
   active: boolean;
-  onPick: () => void;
+  onOpen: () => void;
 }) {
   const listing = vendorToListing(vendor);
   const meta = CATEGORIES[vendor.category];
   return (
     <button
       type="button"
-      onClick={onPick}
+      onClick={onOpen}
       aria-pressed={active}
       className={cn(
         "group text-left rounded-xl border bg-card transition-all overflow-hidden",
@@ -1046,16 +1082,16 @@ function PickableVendor({
 function MiniVendorTile({
   vendor,
   active,
-  onPick,
+  onOpen,
 }: {
   vendor: Vendor;
   active: boolean;
-  onPick: () => void;
+  onOpen: () => void;
 }) {
   return (
     <button
       type="button"
-      onClick={onPick}
+      onClick={onOpen}
       aria-pressed={active}
       className={cn(
         "group text-left rounded-lg border bg-card transition-all overflow-hidden",
