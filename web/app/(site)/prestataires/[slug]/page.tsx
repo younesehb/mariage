@@ -9,10 +9,14 @@ import {
   vendors,
   vendorToListing,
   CATEGORY_LABELS_FR,
+  socialsFor,
+  recentPostsFor,
 } from "@/lib/fixtures";
 import { PhotoMosaic } from "@/components/photo-mosaic";
 import { ReviewCard } from "@/components/review-card";
 import { ListingCard } from "@/components/listing-card";
+import { SocialLinks } from "@/components/social-links";
+import { RecentPosts } from "@/components/recent-posts";
 import { StarRating } from "@/components/ui/star-rating";
 
 export default async function VendorDetailPage({
@@ -26,6 +30,8 @@ export default async function VendorDetailPage({
 
   const rs = reviewsFor("vendor", v.id);
   const rating = avgRating(rs);
+  const social = socialsFor(v.id);
+  const posts = recentPostsFor(v.id);
   const isTraiteur = v.category === "traiteur";
 
   const similar = vendors
@@ -75,6 +81,7 @@ export default async function VendorDetailPage({
                 {v.serviceCities.join(", ")}
               </span>
             </div>
+            {social && <SocialLinks links={social} size="sm" className="pt-1" />}
           </header>
 
           <div className="hairline-divider" />
@@ -125,6 +132,13 @@ export default async function VendorDetailPage({
             <h2 className="font-serif text-2xl text-ink mb-4">À propos</h2>
             <p className="text-base text-ink leading-relaxed max-w-[65ch]">{v.description.fr}</p>
           </section>
+
+          {posts.length > 0 && (
+            <>
+              <div className="hairline-divider" />
+              <RecentPosts posts={posts} social={social} subjectName={v.name} />
+            </>
+          )}
 
           <div className="hairline-divider" />
 

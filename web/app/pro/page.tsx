@@ -175,8 +175,9 @@ export default function ProDashboardPage() {
                 <Completion done>Description FR</Completion>
                 <Completion done>Capacités et politiques</Completion>
                 <Completion done>Calendrier à jour</Completion>
+                <Completion done>Réseaux sociaux connectés</Completion>
                 <Completion done={false}>Description NL</Completion>
-                <Completion done={false}>Réseaux sociaux connectés</Completion>
+                <Completion done={false}>Vidéo de présentation</Completion>
               </ul>
               <Link
                 href="/pro/fiche"

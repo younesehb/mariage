@@ -38,6 +38,27 @@ export interface I18nText {
   nl: string;
 }
 
+/** Social handles are stored without leading `@`, without full URL. */
+export interface SocialLinks {
+  instagram?: string; // handle, e.g. "al.andalous.brussels"
+  tiktok?: string;
+  facebook?: string; // page slug, e.g. "AlAndalousBrussels"
+  website?: string; // full URL
+}
+
+/** A recent Instagram post shown on a listing. For MVP this is fixture data. */
+export interface SocialPost {
+  id: string;
+  platform: "instagram" | "tiktok";
+  /** Placeholder fallback class — in production this becomes the real image URL. */
+  fallback: string;
+  caption: string;
+  /** ISO date string of the post. */
+  postedAt: string;
+  likes: number;
+  permalink: string; // https://instagram.com/p/xxx — live link
+}
+
 export interface Venue {
   id: string;
   slug: string;
@@ -63,6 +84,7 @@ export interface Venue {
   stageAvailable: boolean;
   traiteurPolicy: TraiteurPolicy;
   femaleStaffAvailable: boolean;
+  social?: SocialLinks;
   claimStatus: ClaimStatus;
   status: ListingStatus;
 }
@@ -78,6 +100,7 @@ export interface Vendor {
   contactWhatsapp: string;
   contactEmail: string;
   femaleStaffAvailable: boolean;
+  social?: SocialLinks;
   claimStatus: ClaimStatus;
   status: ListingStatus;
   // Traiteur-only:

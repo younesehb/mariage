@@ -1,11 +1,22 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, MapPin, Users, Clock, Music, Car, ShieldCheck, HeartHandshake, AlignJustify } from "lucide-react";
-import { findVenueBySlug, reviewsFor, avgRating, venueToListing, venues, venueBadges } from "@/lib/fixtures";
+import {
+  findVenueBySlug,
+  reviewsFor,
+  avgRating,
+  venueToListing,
+  venues,
+  venueBadges,
+  socialsFor,
+  recentPostsFor,
+} from "@/lib/fixtures";
 import { PhotoMosaic } from "@/components/photo-mosaic";
 import { ReviewCard } from "@/components/review-card";
 import { InquiryCard } from "@/components/inquiry-card";
 import { ListingCard } from "@/components/listing-card";
+import { SocialLinks } from "@/components/social-links";
+import { RecentPosts } from "@/components/recent-posts";
 import { StarRating } from "@/components/ui/star-rating";
 
 export default async function VenueDetailPage({
@@ -19,6 +30,8 @@ export default async function VenueDetailPage({
 
   const rs = reviewsFor("venue", venue.id);
   const rating = avgRating(rs);
+  const social = socialsFor(venue.id);
+  const posts = recentPostsFor(venue.id);
   const similar = venues
     .filter((v) => v.id !== venue.id && v.city === venue.city)
     .slice(0, 4)
@@ -62,6 +75,7 @@ export default async function VenueDetailPage({
               <span className="text-ink-muted">·</span>
               <span className="font-medium">{venue.priceTier}</span>
             </div>
+            {social && <SocialLinks links={social} size="sm" className="pt-1" />}
           </header>
 
           <div className="hairline-divider" />
@@ -163,6 +177,13 @@ export default async function VenueDetailPage({
               />
             </div>
           </section>
+
+          {posts.length > 0 && (
+            <>
+              <div className="hairline-divider" />
+              <RecentPosts posts={posts} social={social} subjectName={venue.name} />
+            </>
+          )}
 
           <div className="hairline-divider" />
 

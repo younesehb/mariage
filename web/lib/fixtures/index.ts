@@ -1,11 +1,20 @@
 import { venues, findVenueBySlug } from "./venues";
 import { vendors, findVendorBySlug, vendorsByCategory } from "./vendors";
 import { reviews, reviewsFor, avgRating } from "./reviews";
-import type { ListingSummary, Vendor, Venue, Review } from "@/lib/types";
+import { SOCIALS, RECENT_POSTS } from "./social";
+import type { ListingSummary, Vendor, Venue, SocialLinks, SocialPost } from "@/lib/types";
 
 export { venues, findVenueBySlug };
 export { vendors, findVendorBySlug, vendorsByCategory };
 export { reviews, reviewsFor, avgRating };
+
+export function socialsFor(subjectId: string): SocialLinks | undefined {
+  return SOCIALS[subjectId];
+}
+
+export function recentPostsFor(subjectId: string): SocialPost[] {
+  return RECENT_POSTS[subjectId] ?? [];
+}
 
 // Human-readable badges per spec §6 venue fields
 export function venueBadges(v: Venue): string[] {

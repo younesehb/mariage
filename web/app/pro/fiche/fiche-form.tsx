@@ -3,12 +3,21 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { Image, Plus, Save, Eye, AlertCircle } from "lucide-react";
-import type { Venue } from "@/lib/types";
+import type { Venue, SocialLinks as SocialLinksType } from "@/lib/types";
+import { socialsFor } from "@/lib/fixtures";
 import { cn } from "@/lib/utils";
 
 export function FicheForm({ venue }: { venue: Venue }) {
   const [draft, setDraft] = useState(venue);
+  const [social, setSocial] = useState<SocialLinksType>(
+    socialsFor(venue.id) ?? {},
+  );
   const [dirty, setDirty] = useState(false);
+
+  function updateSocial<K extends keyof SocialLinksType>(key: K, value: string) {
+    setSocial((s) => ({ ...s, [key]: value || undefined }));
+    setDirty(true);
+  }
 
   function set<K extends keyof Venue>(key: K, value: Venue[K]) {
     setDraft((d) => ({ ...d, [key]: value }));
@@ -229,6 +238,47 @@ export function FicheForm({ venue }: { venue: Venue }) {
             checked={draft.femaleStaffAvailable}
             onChange={(v) => set("femaleStaffAvailable", v)}
           />
+        </div>
+      </Section>
+
+      <Section
+        title="Réseaux sociaux"
+        hint="Vos comptes Instagram et TikTok s'affichent sur votre fiche publique avec les 6 dernières publications."
+      >
+        <div className="grid md:grid-cols-2 gap-4">
+          <Field label="Instagram (handle sans @)">
+            <input
+              value={social.instagram ?? ""}
+              onChange={(e) => updateSocial("instagram", e.target.value)}
+              placeholder="al.andalous.brussels"
+              className="w-full rounded-lg border border-hairline bg-card px-3 py-2.5 text-sm outline-none focus:border-ink"
+            />
+          </Field>
+          <Field label="TikTok (handle)">
+            <input
+              value={social.tiktok ?? ""}
+              onChange={(e) => updateSocial("tiktok", e.target.value)}
+              placeholder="al.andalous.brussels"
+              className="w-full rounded-lg border border-hairline bg-card px-3 py-2.5 text-sm outline-none focus:border-ink"
+            />
+          </Field>
+          <Field label="Facebook (page)">
+            <input
+              value={social.facebook ?? ""}
+              onChange={(e) => updateSocial("facebook", e.target.value)}
+              placeholder="AlAndalousBrussels"
+              className="w-full rounded-lg border border-hairline bg-card px-3 py-2.5 text-sm outline-none focus:border-ink"
+            />
+          </Field>
+          <Field label="Site web">
+            <input
+              type="url"
+              value={social.website ?? ""}
+              onChange={(e) => updateSocial("website", e.target.value)}
+              placeholder="https://al-andalous.be"
+              className="w-full rounded-lg border border-hairline bg-card px-3 py-2.5 text-sm outline-none focus:border-ink"
+            />
+          </Field>
         </div>
       </Section>
 
