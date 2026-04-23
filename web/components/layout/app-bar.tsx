@@ -6,6 +6,7 @@ import { LanguageSwitcher } from "./language-switcher";
 const navItems = [
   { href: "/salles", label: "Salles" },
   { href: "/prestataires", label: "Prestataires" },
+  { href: "/planifier", label: "Planifier" },
 ];
 
 export function AppBar() {

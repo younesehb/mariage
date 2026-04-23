@@ -46,6 +46,17 @@ export default function Home() {
           <div className="mt-8 md:hidden">
             <SearchBar variant="inline" />
           </div>
+
+          <Link
+            href="/planifier"
+            className="mt-6 inline-flex items-center gap-2 text-sm text-ink-muted hover:text-ink transition-colors group w-fit"
+          >
+            <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-garnet/10 text-garnet group-hover:bg-garnet group-hover:text-white transition-colors">
+              <Sparkles className="h-3.5 w-3.5" strokeWidth={1.75} />
+            </span>
+            Pas encore de salle ? Planifier tout étape par étape
+            <ArrowUpRight className="h-4 w-4 opacity-60 group-hover:opacity-100 group-hover:rotate-12 transition-all" strokeWidth={1.5} />
+          </Link>
         </div>
       </section>
 
